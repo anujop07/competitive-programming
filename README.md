@@ -1,12 +1,10 @@
-# Competitive Programming & DSA
+# Competitive Programming
 
-My competitive programming solutions and templates.
+This repository contains my competitive programming work, including:
+- **CONTEST** – solutions from live and virtual contests
+- **SOLVING** – daily practice problems
+- **TEMPLATE** – my C++ competitive programming boilerplate
 
-## Structure
-- `TEMPLATE/` - Code templates for competitive programming
+---
 
-## Usage
-Compile with: `g++ -std=c++17 -O2 filename.cpp -o filename`
 
-## Author
-anuj
