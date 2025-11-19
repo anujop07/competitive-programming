@@ -1,19 +1,17 @@
-# Compiled files
+# Compiled executables (keep .cpp files)
 *.exe
 *.out
+
+# Object files
 *.o
 *.obj
 
-# Input/Output files (optional - uncomment if you don't want to track these)
-# input.txt
-# output.txt
-
 # IDE/Editor files
-.vscode/
+.vscode/settings.json
+.vscode/launch.json
 .idea/
 *.swp
 *.swo
-*~
 
 # OS files
 .DS_Store
@@ -22,3 +20,6 @@ desktop.ini
 
 # Debug files
 *.dSYM/
+
+# Competitive Programming Helper
+.cph/
