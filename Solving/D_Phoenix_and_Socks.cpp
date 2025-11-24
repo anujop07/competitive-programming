@@ -41,141 +41,93 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-// ll solve(string &s ,string &t,ll &k)
-// {
-//     vector<ll>freq(k,0);
-
-//    int i=0;
-//    int j=0;
+ll solve1(){
+    ll n;
+    cin >> n;
    
-//    int n=s.size();
-//    int m=t.size();
+    ll l,r;
+    cin>>l>>r;
 
-//    while(i<n && j<m)
-//    {
-//       if(s[i]==t[j]) j++;
-//       i++;
-//    }
-//    // here is the main part over here 
-  
-
-//    if(j<m) return 0;
-// //   if(i==n && i==m) return 1;
-//    debug(j);
-//    // not ans subswuanece here 
-//    ll cn=0;
-//    ll ans=0;
-//    j=i;
-   
-//    while(j<n)
-//    {
-//        if(freq[s[j]-'a']==0)
-//        {
-//            cn++;
-//            freq[s[j]-'a']++;
-//        }
-
-//        if(cn==k)
-//        {
-//          for(ll &it:freq)
-//          {
-//              it=0;
-//          }
-//          ans++;
-//          cn=0;
-
-//        }
-//        debug(freq);
-//        debug(j);
-//        j++;
-//    }
-
-// //    bool g=0;
-// //    for(int it:freq)
-// //    {
-// //       if(it) 
-// //       {
-// //         ans++;
-// //         break;
-// //       }
-// //    }
-
-
-//    return max(1LL,ans+1);
-
-// }
-void  solve1()
-{
-    ll n,k;
-    cin>>n>>k;
-
-    string s;
-    cin>>s;
-
-    ll q;
-    cin>>q;
-
-    // string temp=s;
-    // sort(temp.begin(),temp.end());
-
-    vector<vector<ll>>nxt(n+2,vector<ll>(k,n));
+    vector<ll>arr(n);
     
-    for(int i=n-1;i>=0;i--)
-    {
-        nxt[i]=nxt[i+1];
+    in(arr);
 
-        nxt[i][s[i]-'a']=i;
+    map<ll,ll>left,right;
+
+    for(int i=0;i<l;i++) left[arr[i]]++;
+
+    for(int i=l;i<n;i++) right[arr[i]]++;
+
+    // remove maccth here
+
+    for(auto &it:left)
+    {
+        ll color=it.first;
+        ll rightcn=right[color];
+        ll leftcn=it.second;
+
+        ll minus=min(rightcn,leftcn);
+
+        left[color]-=minus;
+        right[color]-=minus;
     }
 
+    // now ll wale and rr 
 
-    vector<ll>dp(n+1,0);
-
-    for(int i=n-1;i>=0;i--)
-    {
-        ll mx=0;
-
-        for(int c=0;c<k;c++)
-        {
-            mx=max(mx,nxt[i+1][c]);
-        }
+    ll ans=0;
+   
+    ll leftcn=0;
+    ll rightcn=0;
     
-        dp[i]=1+dp[mx];
-
-    }
-
-    while(q--)
+    for(auto &it:left)
     {
-        string t;
-        cin>>t;
-
-        int pos=-1;
-        bool ok=true;
-
-        for(char ch:t)
+        ans+=(it.second)/2;
+        if(it.second%2==1)
         {
-            int x=nxt[pos+1][ch-'a'];
-            if(x==n)
-            {
-                ok=false;
-                break;
-            }
-            pos=x;
-        }
-
-        if(!ok)
-        {
-            cout<<0<<endl;
+            it.second=1;
+            leftcn++;
         }
         else
         {
-            cout<<dp[pos]<<endl;
+            it.second=0;
         }
-
-
-      
     }
 
-    return ;
+        for(auto &it:right)
+    {
+        ans+=(it.second)/2;
+        if(it.second%2==1)
+        {
+            it.second=1;
+            rightcn++;
+        }
+        else
+        {
+            it.second=0;
+        }
+    }
+
+    debug(ans);
+    debug(leftcn);
+    debug(rightcn);
+
+
+
+    // g ->l 
+
+    ll minus=min(leftcn,rightcn);
+
+    ans+=minus;
+
+    leftcn-=minus;
+    rightcn-=minus;
+
+    ans+=2*max(leftcn,rightcn);
+
+    return ans;
+
+
+
 }
 
 int main(){
@@ -187,9 +139,10 @@ int main(){
     // freopen("output.txt", "w", stdout);
     // #endif
 
-    int t=1;
+    int t;
+    cin >> t;
     while(t--){
-       solve1();
+        cout << solve1() << "\n";
     }
     return 0;
 }
