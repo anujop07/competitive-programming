@@ -41,139 +41,54 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-// ll solve(string &s ,string &t,ll &k)
-// {
-//     vector<ll>freq(k,0);
 
-//    int i=0;
-//    int j=0;
-   
-//    int n=s.size();
-//    int m=t.size();
-
-//    while(i<n && j<m)
-//    {
-//       if(s[i]==t[j]) j++;
-//       i++;
-//    }
-//    // here is the main part over here 
-  
-
-//    if(j<m) return 0;
-// //   if(i==n && i==m) return 1;
-//    debug(j);
-//    // not ans subswuanece here 
-//    ll cn=0;
-//    ll ans=0;
-//    j=i;
-   
-//    while(j<n)
-//    {
-//        if(freq[s[j]-'a']==0)
-//        {
-//            cn++;
-//            freq[s[j]-'a']++;
-//        }
-
-//        if(cn==k)
-//        {
-//          for(ll &it:freq)
-//          {
-//              it=0;
-//          }
-//          ans++;
-//          cn=0;
-
-//        }
-//        debug(freq);
-//        debug(j);
-//        j++;
-//    }
-
-// //    bool g=0;
-// //    for(int it:freq)
-// //    {
-// //       if(it) 
-// //       {
-// //         ans++;
-// //         break;
-// //       }
-// //    }
-
-
-//    return max(1LL,ans+1);
-
-// }
-void  solve1()
+ll solve(ll x,ll y)
 {
-    ll n,k;
-    cin>>n>>k;
-
-    string s;
-    cin>>s;
-
-    ll q;
-    cin>>q;
-
-    // string temp=s;
-    // sort(temp.begin(),temp.end());
-
-    vector<vector<ll>>nxt(n+2,vector<ll>(k,n));
+ 
+     ll ans=0;
+     while(x!=0)
+     {
+        if(y==0) return ans+1;
+        x %= 2*y;    
+        x=abs(x-y);
+        swap(x,y);
+        ans++;
+     }
+     return ans;
+}
+ll solve1(){
+    int n;
+    cin >> n;
     
-    for(int i=n-1;i>=0;i--)
+    vector<ll>arr(n);
+    vector<ll>brr(n);
+
+    in(arr);
+    in(brr);
+
+    ll ans=-1;
+    for(int i=0;i<n;i++)
     {
-        nxt[i]=nxt[i+1];
-
-        nxt[i][s[i]-'a']=i;
-    }
-
-
-    vector<ll>dp(n+1,0);
-
-    for(int i=n-1;i>=0;i--)
-    {
-        ll mx=0;
-
-        for(int c=0;c<k;c++)
+        if(arr[i]==0 && brr[i]==0)
         {
-            mx=max(mx,nxt[i+1][c]);
+            continue;
         }
-    
-        dp[i]=1+dp[mx];
+
+        ll req=solve(arr[i],brr[i]);
+        
+        req=req%3;
+
+        if(ans!=-1) 
+        {
+            if(ans!=req) return false;
+        }
+        if(ans==-1) ans=req;
 
     }
-
-    while(q--)
-    {
-        string t;
-        cin>>t;
-
-        int pos=-1;
-        bool ok=true;
-
-        for(char ch:t)
-        {
-            int x=nxt[pos+1][ch-'a'];
-            if(x==n)
-            {
-                ok=false;
-                break;
-            }
-            pos=x;
-        }
-
-        if(!ok)
-        {
-            cout<<0<<endl;
-        }
-        else
-        {
-            cout<<dp[pos]<<endl;
-        }
-    }
+    return true;
 
     
-    return ;
+    return 0;
 }
 
 int main(){
@@ -185,9 +100,16 @@ int main(){
     // freopen("output.txt", "w", stdout);
     // #endif
 
-    int t=1;
+    int t;
+    cin >> t;
     while(t--){
-       solve1();
+        if(solve1()){
+            cout<<"YES"<<endl;
+        }
+        else
+        {
+            cout<<"NO"<<endl;
+        }
     }
     return 0;
 }

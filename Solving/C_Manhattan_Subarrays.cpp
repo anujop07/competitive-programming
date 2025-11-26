@@ -41,139 +41,53 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-// ll solve(string &s ,string &t,ll &k)
-// {
-//     vector<ll>freq(k,0);
-
-//    int i=0;
-//    int j=0;
-   
-//    int n=s.size();
-//    int m=t.size();
-
-//    while(i<n && j<m)
-//    {
-//       if(s[i]==t[j]) j++;
-//       i++;
-//    }
-//    // here is the main part over here 
-  
-
-//    if(j<m) return 0;
-// //   if(i==n && i==m) return 1;
-//    debug(j);
-//    // not ans subswuanece here 
-//    ll cn=0;
-//    ll ans=0;
-//    j=i;
-   
-//    while(j<n)
-//    {
-//        if(freq[s[j]-'a']==0)
-//        {
-//            cn++;
-//            freq[s[j]-'a']++;
-//        }
-
-//        if(cn==k)
-//        {
-//          for(ll &it:freq)
-//          {
-//              it=0;
-//          }
-//          ans++;
-//          cn=0;
-
-//        }
-//        debug(freq);
-//        debug(j);
-//        j++;
-//    }
-
-// //    bool g=0;
-// //    for(int it:freq)
-// //    {
-// //       if(it) 
-// //       {
-// //         ans++;
-// //         break;
-// //       }
-// //    }
 
 
-//    return max(1LL,ans+1);
-
-// }
-void  solve1()
+ll solve(vector<ll>&arr)
 {
-    ll n,k;
-    cin>>n>>k;
-
-    string s;
-    cin>>s;
-
-    ll q;
-    cin>>q;
-
-    // string temp=s;
-    // sort(temp.begin(),temp.end());
-
-    vector<vector<ll>>nxt(n+2,vector<ll>(k,n));
-    
-    for(int i=n-1;i>=0;i--)
+    ll ans=0;
+    int n=arr.size();
+    for(int i=0;i<n-3;i++)
     {
-        nxt[i]=nxt[i+1];
+        int a1=arr[i];
+        int a2=arr[i+1];
+        int a3=arr[i+2];
+        int a4=arr[i+3];
 
-        nxt[i][s[i]-'a']=i;
-    }
-
-
-    vector<ll>dp(n+1,0);
-
-    for(int i=n-1;i>=0;i--)
-    {
-        ll mx=0;
-
-        for(int c=0;c<k;c++)
-        {
-            mx=max(mx,nxt[i+1][c]);
-        }
-    
-        dp[i]=1+dp[mx];
+        if(a1<=a2 && a2<=max(a3,a4)) continue;
+        if(a2<=a3 && a3<=a4) continue;
+        if(min(a1,a2)<=a3 && a3<=a4) continue;
+        if(a1<=a2 && a2<=a3) continue;
+        // here deac
+         if(a1>=a2 && a2>=min(a3,a4)) continue;
+        if(a2>=a3 && a3>=a4) continue;
+        if(max(a1,a2)>=a3 && a3>=a4) continue;
+        if(a1>=a2 && a2>=a3) continue;
+        ans++;
 
     }
+    return ans;
+}
+ll solve1()
+{
+    ll n;
+    cin >> n;
+    vector<ll> arr(n);
+    in(arr);
 
-    while(q--)
-    {
-        string t;
-        cin>>t;
+    ll ans=n+(max(n-1,0LL));
 
-        int pos=-1;
-        bool ok=true;
-
-        for(char ch:t)
-        {
-            int x=nxt[pos+1][ch-'a'];
-            if(x==n)
-            {
-                ok=false;
-                break;
-            }
-            pos=x;
-        }
-
-        if(!ok)
-        {
-            cout<<0<<endl;
-        }
-        else
-        {
-            cout<<dp[pos]<<endl;
-        }
-    }
-
+    //  debug(ans);
+    // len 3 
     
-    return ;
+    for(int i=1;i<n-1;i++)
+    {
+        ans+=!((arr[i-1]>=arr[i] && arr[i]>=arr[i+1])||(arr[i-1]<=arr[i] && arr[i]<=arr[i+1]));
+
+    }
+    // debug(ans);
+    return ans+solve(arr);
+    return 0;
 }
 
 int main(){
@@ -185,9 +99,11 @@ int main(){
     // freopen("output.txt", "w", stdout);
     // #endif
 
-    int t=1;
-    while(t--){
-       solve1();
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        cout << solve1() << "\n";
     }
     return 0;
 }

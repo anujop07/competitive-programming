@@ -41,138 +41,87 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-// ll solve(string &s ,string &t,ll &k)
-// {
-//     vector<ll>freq(k,0);
-
-//    int i=0;
-//    int j=0;
-   
-//    int n=s.size();
-//    int m=t.size();
-
-//    while(i<n && j<m)
-//    {
-//       if(s[i]==t[j]) j++;
-//       i++;
-//    }
-//    // here is the main part over here 
-  
-
-//    if(j<m) return 0;
-// //   if(i==n && i==m) return 1;
-//    debug(j);
-//    // not ans subswuanece here 
-//    ll cn=0;
-//    ll ans=0;
-//    j=i;
-   
-//    while(j<n)
-//    {
-//        if(freq[s[j]-'a']==0)
-//        {
-//            cn++;
-//            freq[s[j]-'a']++;
-//        }
-
-//        if(cn==k)
-//        {
-//          for(ll &it:freq)
-//          {
-//              it=0;
-//          }
-//          ans++;
-//          cn=0;
-
-//        }
-//        debug(freq);
-//        debug(j);
-//        j++;
-//    }
-
-// //    bool g=0;
-// //    for(int it:freq)
-// //    {
-// //       if(it) 
-// //       {
-// //         ans++;
-// //         break;
-// //       }
-// //    }
-
-
-//    return max(1LL,ans+1);
-
-// }
-void  solve1()
+bool solve(ll i,ll cursum,vector<ll>&arr,ll sum,vector<vector<int>>&dp)
 {
-    ll n,k;
-    cin>>n>>k;
+    if(i>=arr.size()) return cursum==sum/2;
 
-    string s;
-    cin>>s;
+    if(cursum>sum/2) return false;
 
-    ll q;
-    cin>>q;
+    if(dp[i][cursum]!=-1) return dp[i][cursum];
 
-    // string temp=s;
-    // sort(temp.begin(),temp.end());
+    bool ans=false;
 
-    vector<vector<ll>>nxt(n+2,vector<ll>(k,n));
-    
-    for(int i=n-1;i>=0;i--)
+    ans=ans | solve(i+1,cursum+arr[i],arr,sum,dp);
+    ans=ans | solve(i+1,cursum,arr,sum,dp);
+    return dp[i][cursum]=ans;
+}
+void solve1(){
+    int n;
+    cin >> n;
+    vector<ll> arr(n);
+    in(arr);
+
+    ll sum=summ(arr);
+    if(sum%2==1)
     {
-        nxt[i]=nxt[i+1];
-
-        nxt[i][s[i]-'a']=i;
+        cout<<0<<endl;
+        return ;
     }
 
-
-    vector<ll>dp(n+1,0);
-
-    for(int i=n-1;i>=0;i--)
+    int miniidx=0;
+    int od=-1;
+    for(int i=0;i<n;i++)
     {
-        ll mx=0;
-
-        for(int c=0;c<k;c++)
+        if(arr[miniidx]>arr[i])
         {
-            mx=max(mx,nxt[i+1][c]);
+            miniidx=i;
         }
-    
-        dp[i]=1+dp[mx];
-
+        if(arr[i]%2==1)
+        {
+            od=i;
+        }
     }
+    // sort(arr);
+    // for(int it:arr) mp[it]++;
 
-    while(q--)
+    
+    vector<vector<int>>dp(n,vector<int>(sum/2+1,-1));
+    if(solve(0,0,arr,sum,dp))
     {
-        string t;
-        cin>>t;
-
-        int pos=-1;
-        bool ok=true;
-
-        for(char ch:t)
+        cout<<1<<endl;
+       
+        if(od!=-1)
         {
-            int x=nxt[pos+1][ch-'a'];
-            if(x==n)
-            {
-                ok=false;
-                break;
-            }
-            pos=x;
-        }
-
-        if(!ok)
-        {
-            cout<<0<<endl;
+            cout<<od+1<<endl;
         }
         else
         {
-            cout<<dp[pos]<<endl;
-        }
-    }
+            // all are even then 
+            // which one is to s;ec here 
+            // divising by 2 will not cause here 
+            // so we can have like that here
 
-    
+            while(true)
+            {
+                for(int i=0;i<n;i++)
+                {
+                    arr[i]=arr[i]/2;
+                    if(arr[i]%2==1) 
+                    {
+                        cout<<i+1<<endl;
+                        return ;
+                    }
+                }
+            }
+        }
+       
+    }
+    else
+    {
+        cout<<0<<endl;
+    }
+    // TODO: implement solution here
+
     return ;
 }
 
