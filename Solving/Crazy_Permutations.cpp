@@ -42,47 +42,38 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // =================== SOLVE FUNCTION =================
 // ===================================================
 
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
+bool solve(long long l1, long long r1, long long l2, long long r2) {
+    if (l1 > r1) swap(l1, r1);
+    if (l2 > r2) swap(l2, r2);
+
+    return max(l1, l2) <= min(r1, r2);
 }
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
+ll solve1(){
+    int n;
+    cin >> n;
+    vector<ll> arr(n);
+    in(arr);
+    vector<ll> brr(n);
+    in(brr);
 
-    ll ans=s;
-    while(s<=e)
+
+    // for(int i=0;i<n;i++)
+    // {
+    //     if(arr[i]<brr[i]) swap(arr[i],brr[i]);
+    // }
+ 
+
+    for(int i=0;i<n-1;i++)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
-        {
-            s=mid+1;
-        }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
-
-
+      
+        if ((arr[i] < arr[i+1] && brr[i] > brr[i+1]) ||
+            (arr[i] > arr[i+1] && brr[i] < brr[i+1]))
+            {
+                return false;
+            }
     }
-
-    cout<<"! "<<ans<<endl;
+  
+    return true;
 }
 
 int main(){
@@ -92,7 +83,14 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+       if(solve1())
+       {
+        cout<<"YES"<<endl;
+       }
+       else
+       {
+        cout<<"NO"<<endl;
+       }
     }
     return 0;
 }

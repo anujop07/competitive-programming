@@ -41,58 +41,102 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
+ll solve1(){
   
-    ll s=1;
-    ll e=999;
+    string s;
+    cin>>s;
 
-    ll ans=s;
-    while(s<=e)
+    string t;
+    cin>>t;
+
+
+    vector<int>pre;
+    vector<int>suf;
+
+    int i=0;
+    int j=0;
+
+    while(i<s.size() && j<t.size())
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        if(s[i]==t[j])
         {
-            s=mid+1;
+            pre.push_back(i);
+            j++;
         }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
-
-
+        i++;
+        
     }
 
-    cout<<"! "<<ans<<endl;
+
+    i=s.size()-1;
+    j=t.size()-1;
+
+    while(i>=0 && j>=0)
+    {
+        if(s[i]==t[j])
+        {
+            suf.push_back(i);
+            j--;
+            
+        }
+        i--;
+    }
+
+
+    //
+    ll ans=0;
+    i=0;
+    j=0;
+    while(i<s.size() && j<t.size())
+    {
+        if(s[i]==t[j])
+        {
+            int rem=t.size()-(j+1);
+            if(rem==0)
+            {
+                ans=max(ans,(ll)s.size()-i-1);
+            }
+            else
+            {
+                ans=max(ans,(ll)i-suf[rem-1]);
+            }
+            j++;
+        }
+        i++;
+        
+    }
+
+    i=s.size()-1;
+    j=t.size()-1;
+
+    while(i>=0 && j>=0)
+    {
+        if(s[i]==t[j])
+        {
+            int rem=j;
+            if(rem==0)
+            {
+                ans=max(ans,(ll)i);
+            }
+            else 
+            {
+                ans=max(ans,i-(ll)pre[rem-1]-1);
+            }
+            j--;
+            
+        }
+        i--;
+    }
+
+    return ans;
+
+
 }
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
 
-    int t;
-    cin >> t;
-    while(t--){
-      solve1();
-    }
+   cout<<solve1()<<endl;
     return 0;
 }

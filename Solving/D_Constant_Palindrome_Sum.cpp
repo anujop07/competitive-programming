@@ -41,48 +41,66 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
+ll solve1(){
+    int n;
+    cin >> n;
+    ll k;
+    cin>>k;
+    vector<ll> arr(n);
+    in(arr);
 
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
+    vector<ll>diff(2*k+3);
 
-    ll ans=s;
-    while(s<=e)
+    ll total=n/2;
+
+    int i=0;
+    int j=n-1;
+
+    map<ll,ll>mp;
+    
+    while(i<j)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
-        {
-            s=mid+1;
-        }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
+        ll sum=arr[i]+arr[j];
+        ll mini=min(arr[i],arr[j]);
+        ll maxi=max(arr[i],arr[j]);
+        
+        mp[sum]++;
+        
+        ll l=sum-maxi+1;
+        ll r=sum+(k-mini);
 
+        diff[l]++;
+        diff[r+1]--;
 
+        i++;
+        j--;
+        
     }
 
-    cout<<"! "<<ans<<endl;
+    ll sum=0;
+    for(int i=0;i<diff.size();i++)
+    {
+        sum+=diff[i];
+        diff[i]=sum;
+    }
+
+    // here 
+    ll ans=n;
+    for(ll i=2;i<=2*k;i++)
+    { 
+        ll reqsum=i;
+    
+        ll curans=diff[reqsum]-mp[reqsum];
+        curans+=2*(total-diff[reqsum]);
+        
+        ans=min(ans,curans);
+    }
+    return ans;
+
+    
+    // TODO: implement solution here
+
+    return 0;
 }
 
 int main(){
@@ -92,7 +110,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        cout << solve1() << "\n";
     }
     return 0;
 }

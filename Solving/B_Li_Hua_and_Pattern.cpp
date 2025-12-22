@@ -41,48 +41,67 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
+void rotateMatrix(vector<vector<ll>>& mat) {
+    int n = mat.size();
   
-    ll s=1;
-    ll e=999;
-
-    ll ans=s;
-    while(s<=e)
-    {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
-        {
-            s=mid+1;
+    // Swap elements from the start and end to
+    // rotate by 180 degrees
+    for (int i = 0; i < n / 2; i++) {
+        for (int j = 0; j < n; j++) {
+            swap(mat[i][j], mat[n - i - 1][n - j - 1]);
         }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
-
-
     }
+  
+    // Handle the middle row if the matrix 
+    // has odd dimensions
+    if (n % 2 != 0) {
+        int mid = n / 2;
+        for (int j = 0; j < n/2; j++)
+            swap(mat[mid][j], mat[mid][n - j - 1]);
+    }
+}
 
-    cout<<"! "<<ans<<endl;
+ll solve1(){
+ 
+    ll n,m,k;
+    cin>>n>>k;
+
+    m=n;
+
+    vector<vector<ll>>arr(n,vector<ll>(m,0));
+    vector<vector<ll>>brr(n,vector<ll>(m,0));
+
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<m;j++)
+        {
+            cin>>arr[i][j];
+            brr[i][j]=arr[i][j];
+        }
+    }
+    rotateMatrix(brr);
+    debug(brr);
+    
+    
+    ll cn=0;
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<m;j++)
+        {
+            if(arr[i][j]!=brr[i][j]) cn++;
+        }
+    }
+    debug(cn);
+    
+    cn=cn/2;
+    if(cn>k) return false;
+
+    // return true;
+    if(n%2==1) return true;
+    k-=cn;
+    return k%2==0;
+
+
 }
 
 int main(){
@@ -92,7 +111,15 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+      
+        if(solve1())
+        {
+            cout<<"YES"<<endl;
+        }
+        else
+        {
+            cout<<"NO"<<endl;
+        }
     }
     return 0;
 }

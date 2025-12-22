@@ -41,48 +41,45 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
 void solve1(){
-  
-    ll s=1;
-    ll e=999;
+    int n;
+    cin >> n;
 
-    ll ans=s;
-    while(s<=e)
+    ll m;
+    cin>>m;
+
+    vector<ll> arr(m);
+    in(arr);
+
+    vector<int>ans(n,-1);
+
+    set<int>st;
+    
+    int j=n-1;
+    int cn=1;
+    for(int i=0;i<m;i++)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        if(!st.count(arr[i]) && j>=0)
         {
-            s=mid+1;
+            // debug(j);
+            ans[j]=cn;
+            j--;
+            st.insert(arr[i]);
         }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
-
-
+        // debug(ans);
+        // debug(j);
+        cn++;
     }
+    for(int it:ans)
+    {
+        cout<<it<<" ";
+    }
+    cout<<endl;
+    // here which will be remover 
 
-    cout<<"! "<<ans<<endl;
+    // TODO: implement solution here
+
+    return ;
 }
 
 int main(){
@@ -92,7 +89,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        solve1();
     }
     return 0;
 }

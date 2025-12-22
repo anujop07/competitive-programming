@@ -41,48 +41,54 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
+bool isPrime(long long n) {
+    if (n < 2) return false;
+    if (n % 2 == 0) return n == 2;
 
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
+    for (long long i = 3; i * i <= n; i += 2) {
+        if (n % i == 0) return false;
+    }
+    return true;
 }
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
+vector<long long> getDivisors(long long n) {
+    vector<long long> divs;
 
-    ll ans=s;
-    while(s<=e)
-    {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
-        {
-            s=mid+1;
+    for (long long i = 2; i * i <= n; i++) {
+        if (n % i == 0) {
+            divs.push_back(i);
+            if (i * i != n) divs.push_back(n / i);
         }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
-
-
     }
 
-    cout<<"! "<<ans<<endl;
+    // sort(divs.begin(), divs.end());
+    return divs;
+}
+
+ll solve1(){
+    ll n;
+    cin >> n;
+
+    if(n==1) return 1;
+
+    if(n==2) return 1;
+
+    if(n==3) return 1;
+    if(n==4) return 2;
+
+
+    if(isPrime(n)) return 1;
+
+    
+    vector<ll>arr=getDivisors(n);
+    // debug(arr);
+    if(arr.size()==1) return 2;
+    if(arr.size()==2 && isPrime(arr[0]) && isPrime(arr[1])) return 2;
+    return 3;
+    ll cn=0;
+    // // cout<<"ASDA"<<endl;
+    // // if(arr.size()<=)
+    // return cn+1;
+   
 }
 
 int main(){
@@ -92,7 +98,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        cout << solve1() << "\n";
     }
     return 0;
 }

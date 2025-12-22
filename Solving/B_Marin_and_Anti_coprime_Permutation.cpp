@@ -42,57 +42,34 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // =================== SOLVE FUNCTION =================
 // ===================================================
 
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
+ll mod=998244353;
 
-    ll ans=s;
-    while(s<=e)
-    {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
-        {
-            s=mid+1;
-        }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
+ll solve1(vector<ll>& fact){
+    ll n;
+    cin >> n;
 
+    if(n&1) return 0;
 
-    }
-
-    cout<<"! "<<ans<<endl;
+    ll curr = n/2;
+    ll ans = (fact[curr]*fact[curr])%mod;
+    return ans;
 }
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
 
+    vector<ll> fact(1005);
+    fact[0]=1;
+
+    for(ll i=1; i<=1000; i++) {
+        fact[i]=(fact[i-1]*i)%mod;
+    }
+
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        cout << solve1(fact) << "\n";
     }
     return 0;
 }

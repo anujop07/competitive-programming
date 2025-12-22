@@ -42,47 +42,78 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // =================== SOLVE FUNCTION =================
 // ===================================================
 
-ll ask(ll a,ll b)
+ll solve(vector<ll>&arr, ll k)
 {
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
-
-    ll ans=s;
-    while(s<=e)
+    ll mini=k+1;
+    ll maxi=arr.size()-k;
+    // here is the main part over here 
+    vector<int>nums;
+    for(int i=0;i<arr.size();i++)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        if(arr[i]<=maxi && arr[i]>=mini)  nums.push_back(arr[i]);
+    }
+
+    debug(k);
+    debug(nums);
+    for(int i=1;i<nums.size();i++)
+    {
+        if(nums[i]<nums[i-1]) return false;
+    }
+    
+    return true;
+}
+ll solve1(){
+    int n;
+    cin >> n;
+    vector<ll> arr(n);
+    in(arr);
+    ll ans=0;
+  
+    int i=1;
+    int j=n;
+
+   int cn=0;
+
+    while(i<j)
+    {
+        if(arr[i-1]==i && arr[j-1]==j)
         {
-            s=mid+1;
+            i++;
+            j--;
         }
         else
         {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
+            cn++;
+            i++;
+            j--;
         }
+    }
+   
+    if(cn==0) return 0;
+
+    // here we can remove how mnay jere
 
 
+
+    ll s=1;
+    ll e=n/2;
+
+    
+    while(s<=e)
+    {
+        ll mid=(s+e)/2;
+        if(solve(arr,mid))
+        {
+            ans=mid;
+            e=mid-1;
+        }
+        else
+        {
+            s=mid+1;
+        }
     }
 
-    cout<<"! "<<ans<<endl;
+    return ans;
 }
 
 int main(){
@@ -92,7 +123,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        cout << solve1() << "\n";
     }
     return 0;
 }

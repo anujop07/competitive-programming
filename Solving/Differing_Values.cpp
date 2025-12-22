@@ -41,48 +41,80 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
+ll solve1(){
+    int n;
+    cin >> n;
+    
+    ll k;
+    cin>>k;
 
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
+    ll one=0;
 
-    ll ans=s;
-    while(s<=e)
+    string s;
+    cin>>s;
+
+    for(char ch:s)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        if(ch=='1')
         {
-            s=mid+1;
+            one++;
+        }
+    }
+
+    ll zero=n-one;
+    
+    ll odd=0;
+    ll even=0;
+    vector<int>vis(n,0);
+
+    // if(zero>one) swap(one,zero);
+    for(int i=0;i<n-k;i++)
+    {
+        if(vis[i]==1) continue;
+        int j=i;
+        ll cn=0;
+        while(j<n)
+        {
+            vis[j]=1;
+            cn++;
+            j+=k;
+        }
+
+
+        debug(cn);
+        if(cn%2==0)
+        {
+            if(cn/2>min(zero,one)) return false;
+
+            zero-=cn/2;
+            one-=cn/2;
         }
         else
         {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
+            // take max one from
+            ll req1=(cn+1)/2;
+            ll req2=cn/2;
+            if(one>=zero)
+            {
+                one-=req1;
+            zero-=req2;
+            }
+            else
+            {
+                
+                zero-=req1;
+               one-=req2;
+            }
+            
+
+            if(one<0 || zero<0) return false;
+
         }
-
-
     }
 
-    cout<<"! "<<ans<<endl;
+    
+    return true;
+    
 }
 
 int main(){
@@ -92,7 +124,14 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+         if(solve1())
+         {
+            cout<<"YES"<<endl;
+         }
+         else
+         {
+           cout<<"NO"<<endl;
+         }
     }
     return 0;
 }

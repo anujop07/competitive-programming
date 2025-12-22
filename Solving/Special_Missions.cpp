@@ -41,48 +41,38 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
+ll solve1(){
+    ll n;
+    cin >> n;
 
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
+    ll c;
+    cin>>c;
 
-    ll ans=s;
-    while(s<=e)
+
+    vector<ll> arr(n);
+    in(arr);
+
+    string s;
+    cin>>s;
+
+    ll ans=0;
+    ll rem=0;
+    for(int i=0;i<n;i++)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        if(s[i]=='0')
         {
-            s=mid+1;
+            ans+=arr[i];
         }
         else
         {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
+            rem+=arr[i];
         }
-
-
     }
+    if(ans>=c) return max(ans, ans+rem-c);
+    return ans;
+    // TODO: implement solution here
 
-    cout<<"! "<<ans<<endl;
+    return 0;
 }
 
 int main(){
@@ -92,7 +82,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        cout << solve1() << "\n";
     }
     return 0;
 }

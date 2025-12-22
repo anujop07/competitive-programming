@@ -41,58 +41,70 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
+ll solve1(){
+    int n;
+    cin >> n;
+    vector<string> arr(n);
+    in(arr);
   
-    ll s=1;
-    ll e=999;
+    // map<ll,ll>mp;
 
-    ll ans=s;
-    while(s<=e)
+    ll ans=0;
+
+    map<ll,ll>odd,even;
+
+
+    for(auto it:arr)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        int sum=0;
+        for(char ch:it)
         {
-            s=mid+1;
+            int ele=ch-'0';
+            sum+=ele;
         }
-        else
+        
+        if(it.size()%2==1)
         {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
+           odd[sum]++;
         }
+        else 
+        {
+            even[sum]++;
+        }
+    }
+    
+    // we have mapped the even and off
 
+    // what could be sum 
+    // 9 9 9 9 9
+    // 90 max
 
+    debug(odd);
+    debug(even);
+    for(int sum=2;sum<=90;sum++)
+    {
+        for(int ele1=1;ele1<sum;ele1++)
+        {
+            int ele2=sum-ele1;
+            ans+=odd[ele1]*odd[ele2];
+            ans+=even[ele1]*even[ele2];
+
+        }
     }
 
-    cout<<"! "<<ans<<endl;
+    return ans;
+   
+
+    return 0;
 }
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
 
-    int t;
-    cin >> t;
+    int t=1;
     while(t--){
-      solve1();
+        cout << solve1() << "\n";
     }
     return 0;
 }

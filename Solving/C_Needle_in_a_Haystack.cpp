@@ -41,48 +41,57 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
+string solve1(){
+   
+    string s;
+    cin>>s;
+    string t;
+    cin>>t;
 
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
+    map<char,int>mp1,mp2;
 
-    ll ans=s;
-    while(s<=e)
+    for(char ch:s) mp1[ch]++;
+    for(char ch:t) mp2[ch]++;
+
+    for(char ch:s)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
-        {
-            s=mid+1;
-        }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
-
-
+        if(mp1[ch]>mp2[ch]) return "Impossible";
     }
 
-    cout<<"! "<<ans<<endl;
+    string extra="";
+    
+    for(auto it:mp2)
+    {
+        ll cn=it.second-mp1[it.first];
+        while(cn>0)
+        {
+            extra.push_back(it.first);
+            cn--;
+        }
+    }
+
+    // debug(extra);
+    int ei=0;
+    string ans="";
+
+    for(char ch:s)
+    {
+        while(ei<extra.size() && extra[ei]<ch)
+        {
+            ans.push_back(extra[ei]);
+            ei++;
+        }
+        ans.push_back(ch);
+    }
+      while(ei<extra.size())
+        {
+            ans.push_back(extra[ei]);
+            ei++;
+        }
+    return ans;
+
+
+
 }
 
 int main(){
@@ -92,7 +101,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        cout << solve1() << "\n";
     }
     return 0;
 }

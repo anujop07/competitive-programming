@@ -41,50 +41,83 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
 void solve1(){
+    int n;
+    cin >> n;
+    vector<ll> arr(n);
+    in(arr);
+
+    vector<pair<ll,ll>>nums;
+    for(int i=0;i<n;i++)
+   {
+     nums.push_back({arr[i],i});
+   }
+   sort(arr);
+   if(arr[0]==arr[n-1])
+   {
+     cout<<0<<endl;
+     return ;
+   }
+   
+   if(arr[0]==1)
+   {
+     cout<<-1<<endl;
+     return;
+   }
+
+   sort(nums);
+
+   // if all one and one non
+   
+
+   // can we create at east ome tqo hre
+   // last wale ko 2
+   int i=0;
+   while(nums[i].first==1) i++;
+
+   ll ele=nums[i].first;
+
+   int idx=nums[i].second+1;
+   vector<pair<ll,ll>>ans;
+   debug(ele);
   
-    ll s=1;
-    ll e=999;
-
-    ll ans=s;
-    while(s<=e)
+   while(true)
+   {
+        for(int i=0;i<n;i++)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        while(nums[i].first>ele)
         {
-            s=mid+1;
+            ans.push_back({nums[i].second+1,idx});
+            nums[i].first=(nums[i].first+ele-1)/ele;
+            // arr[nums[i].first]=nums[i].first;
         }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
-
-
     }
+    debug(nums);
+    set<int>st;
+      for(int i=0;i<n;i++)
+      {
+         if(ele>nums[i].first)
+         {
+            ele=nums[i].first;
+            idx=nums[i].second+1;
+         }
+          st.insert(nums[i].first);
+      }
+      if(st.size()==1) break;
+   }
 
-    cout<<"! "<<ans<<endl;
+   cout<<ans.size()<<endl;
+
+   for(int i=0;i<ans.size();i++)
+   {
+    cout<<ans[i].first<<" "<<ans[i].second<<endl;
+   }
+   // if all wual then om
+
+   debug(nums);
 }
 
+ 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
@@ -92,7 +125,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        solve1();
     }
     return 0;
 }

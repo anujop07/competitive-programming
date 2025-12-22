@@ -41,48 +41,91 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-
-ll ask(ll a,ll b)
+ll solve(vector<ll>&arr,vector<ll>&brr,ll x)
 {
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
+     ll ans=x;
 
-    ll ans=s;
-    while(s<=e)
+    for(int i=0;i<arr.size();i++)
     {
+        ans=max(ans+brr[i],arr[i]);
+    }
+    // debug(ans);
+    return ans;
+}
+ll solve1(){
+    ll n;
+    cin >> n;
+    ll k;
+    cin>>k;
+    vector<ll> arr(n);
+    in(arr);
+
+    vector<ll>brr(n);
+    in(brr);
+
+    ll opt1=0;
+     ll ans=solve(arr,brr,1);
+     // 360 comes extra !!
+     // return 
+     ll s=1;
+     ll e=k+1;
+
+     ll largest=e;
+     while(s<=e)
+     {
         ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        if(solve(arr,brr,mid)>ans)
         {
-            s=mid+1;
+            largest=mid;
+            e=mid-1;     
         }
         else
         {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
+            s=mid+1;
         }
+     }
+     
+     // we have larger one here 
+
+     ll left=k-largest+1;
+
+     debug(largest);
+     return (ans*k)+(left*(left+1))/2;
 
 
-    }
 
-    cout<<"! "<<ans<<endl;
+     debug("timepa");
+
+     for(int i=1;i<=k;i++)
+     {
+        debug(i);
+        ll curr=solve(arr,brr,i);
+        opt1+=curr;
+        debug(curr);
+     }
+     debug(opt1);
+    // at which it will ineacrese
+    // if a
+    if(brr[0]>arr[0]) return ((k*(k+1))/(2LL))+(ans*k);
+
+     ll same=min(arr[0]-brr[0],k);
+     debug(same);
+    k-=same;
+
+    debug(k);
+    debug(ans);
+
+    // how should i return????
+        return (ans*same)+(ans*k)+(k*(k+1))/2LL;
+
+
+
+
+
+
+    // TODO: implement solution here
+
+    return 0;
 }
 
 int main(){
@@ -92,7 +135,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        cout << solve1() << "\n";
     }
     return 0;
 }

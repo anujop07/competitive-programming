@@ -41,48 +41,102 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-
-ll ask(ll a,ll b)
+bool getpath(int node,int par,vector<ll>&ans,vector<vector<ll>>&adj)
 {
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
+      ll curans=0;
+      if(node==adj.size()-1)
+      {
+        ans.push_back(node);
+        return true;
+      }
+      for(auto it:adj[node])
+      {
+        if(it!=par)
+        {
+            if(getpath(it,node,ans,adj))
+            {
+               ans.push_back(node);
+               return true;
+            }
+        }
+      }
+      return false;
+      
 }
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
 
-    ll ans=s;
-    while(s<=e)
+// how many, is that found
+ll solve2(ll node,ll par,string &s,ll &u,ll &v,vector<vector<ll>>&adj)
+{
+    // 
+    ll curans=0;
+
+    for(auto it:adj[node])
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
-        {
-            s=mid+1;
-        }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
+        if(it==par) continue;
+        if(it==u && node==v) continue;
+        if(it==v && node==u) continue;
 
-
+        curans+=solve2(it,node,s,u,v,adj);
+    }
+    
+    if((curans || s[node-1]=='1') && node!=1 && node!=adj.size()-1)
+    {
+        curans++;
     }
 
-    cout<<"! "<<ans<<endl;
+    return curans;
+}
+ll solve(ll u,ll v,vector<vector<ll>>&adj,string &s)
+{
+
+    ll n=adj.size()-1;
+    debug(n);
+    ll from1= 2*solve2(1,-1,s,u,v,adj);
+    ll fromn=2*solve2(n,-1,s,u,v,adj);
+    debug(u);
+    debug(v);
+    debug(from1);
+    debug(fromn);
+    return from1+fromn;
+     
+}
+ll solve1(){
+    int n;
+    cin >> n;
+ 
+    vector<vector<ll>>adj(n+1);
+    for(int i=0;i<n-1;i++)
+    {
+        ll ele;
+        cin>>ele;
+        adj[i+2].push_back(ele);
+        adj[ele].push_back(i+2);
+    }
+    string s;
+    cin>>s;
+
+    // for(int i=0;i<n;i++)
+    // {
+    //     cout<<min(arr[i],0LL)<<endl;
+    // }
+    // //1 to n 
+    vector<ll>ans1;
+    getpath(1,-1,ans1,adj);
+    debug(ans1);
+
+    reverse(ans1.begin(),ans1.end());
+
+    ll ans=LONG_MAX;
+    for(int i=0;i<ans1.size()-1;i++)
+    {
+      ans=min(ans,solve(ans1[i],ans1[i+1],adj,s));
+    }
+
+   
+    return ans;
+
+
+    return 0;
 }
 
 int main(){
@@ -92,7 +146,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        cout << solve1() << "\n";
     }
     return 0;
 }

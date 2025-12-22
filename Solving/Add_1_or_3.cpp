@@ -41,48 +41,20 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
+ll solve1(){
+   
+    ll n,m;
+    cin>>n>>m;
 
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
+    if(n>m) return false;
+    
+    if((m-n)%2!=0) return false;
+    ll x=(m-n)/2;
+    ll y=n-x;
+    if(y<0) return false;
 
-    ll ans=s;
-    while(s<=e)
-    {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
-        {
-            s=mid+1;
-        }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
-
-
-    }
-
-    cout<<"! "<<ans<<endl;
+    if(3*x+y==m) return true;
+    return false;
 }
 
 int main(){
@@ -92,7 +64,14 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+       if(solve1())
+       {
+        cout<<"YES"<<endl;
+       }
+       else
+       {
+        cout<<"NO"<<endl;
+       }
     }
     return 0;
 }

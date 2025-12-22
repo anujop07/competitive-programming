@@ -41,48 +41,49 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
 void solve1(){
-  
-    ll s=1;
-    ll e=999;
+    int n;
+    cin >> n;
+ 
+    ll k;
+    cin>>k;
 
-    ll ans=s;
-    while(s<=e)
+    string s;
+    cin>>s;
+
+    // now if k>=25 
+    // then just put all a
+    // max char -> jo uske pass hei usko
+
+    ll maxi=LONG_MIN;
+    
+    for(int i=0;i<n;i++)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
-        {
-            s=mid+1;
-        }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
-
-
+        ll req=(s[i]-'a');
+        maxi=max(req,maxi);
     }
 
-    cout<<"! "<<ans<<endl;
+    if(maxi<=k)
+    {
+        // aa
+        for(int i=0;i<n;i++)
+        {
+            cout<<'a';
+        }
+        cout<<endl;
+        return;
+    }
+
+    // here 
+    //
+    // fist ca
+
+    // first one char is greter than the
+
+
+
+
+  
 }
 
 int main(){
@@ -92,7 +93,8 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        // cout << solve1() << "\n";
+        solve1();
     }
     return 0;
 }

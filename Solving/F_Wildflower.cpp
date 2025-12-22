@@ -42,47 +42,99 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // =================== SOLVE FUNCTION =================
 // ===================================================
 
-ll ask(ll a,ll b)
+ll solve(ll node,ll par,vector<vector<ll>>&adj,ll &len1,ll &len2)
 {
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
+        ll curans=1;
+        // debug(node);
+        vector<ll>curr;
+        for(auto it:adj[node])
+        {
+            if(it!=par)
+            {
+                ll childans=solve(it,node,adj,len1,len2);;
+                curans+=childans;
+                curr.push_back(childans);
+                
+            }
+
+        }
+        if(curr.size()==2)
+        {
+            len1=curr[0];
+            len2=curr[1];
+        }
+    
+        return curans;
+    
 }
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
 
-    ll ans=s;
-    while(s<=e)
+ll power(ll n){
+    ll ans = 1;
+    ll base = 2;
+    ll mod = 1e9+7;
+
+    while(n > 0){
+        if(n & 1) ans = (ans * base) % mod;
+        base = (base * base) % mod;
+        n >>= 1;
+    }
+    return ans;
+}
+ll solve1(){
+    int n;
+    cin >> n;
+    
+    vector<vector<ll>>adj(n+1);
+
+    for(int i=0;i<n-1;i++)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
-        {
-            s=mid+1;
-        }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
+        ll u,v;
+        cin>>u>>v;
 
-
+        adj[u].push_back(v);
+        adj[v].push_back(u);
     }
 
-    cout<<"! "<<ans<<endl;
+    ll cn=0;
+
+    for(int i=2;i<=n;i++)
+    {
+        if(adj[i].size()==1) cn++;
+    }
+
+    if(cn>2) return 0;
+    ll mod=1e9+7;
+    if(cn==1)
+    {
+       return power(n);
+    }
+
+    ll len1=0;
+    ll len2=0;
+
+    solve(1,-1,adj,len1,len2);
+
+    debug(len1);
+    debug(len2);
+
+
+    ll maxi=max(len1,len2);
+    ll mini=min(len1,len2);
+
+
+    ll p1=n-2*mini;
+    ll p2=p1-1;
+
+    if(len1==len2)
+    {
+        p2=p1;
+    }
+    debug(p1);
+    debug(p2);
+
+    return (power(p1)%mod+power(p2)%mod)%mod;
+
+
 }
 
 int main(){
@@ -92,7 +144,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        cout << solve1() << "\n";
     }
     return 0;
 }

@@ -42,47 +42,114 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // =================== SOLVE FUNCTION =================
 // ===================================================
 
-ll ask(ll a,ll b)
+ll solve(ll node,ll par,ll total,vector<vector<ll>>&adj,map<ll,ll>&mp)
 {
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
+    ll curans=1;
+    ll all=1;
+    for(auto it:adj[node])
+    {
+        if(it!=par)
+        {
+            ll fromchild=solve(it,node,total,adj,mp);
+            all+=fromchild;
+            mp[node]=max(mp[node],fromchild);
+        }
+    }
+    // here 
+    mp[node]=max(mp[node],total-all);
+
+    return all;
+
 }
 void solve1(){
-  
-    ll s=1;
-    ll e=999;
+    ll n;
+    cin>>n;
 
-    ll ans=s;
-    while(s<=e)
+    vector<vector<ll>>adj(n+1);
+    
+    for(int i=0;i<n-1;i++)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        ll u,v;
+        cin>>u>>v;
+
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    map<ll,ll>mp;
+    // node->max compo
+
+    solve(1,-1,n,adj,mp);
+
+
+    ll mini=INT_MAX;
+
+    for(auto it:mp)
+    {
+        mini=min(mini,it.second);
+    }
+
+    ll cn=0;
+    vector<int>centroid;
+
+    for(auto it:mp)
+    {
+        if(it.second==mini)
         {
-            s=mid+1;
+            centroid.push_back(it.first);
         }
-        else
+    }
+    debug(centroid);
+    debug(mp);
+
+    if(centroid.size()==1)
+    {
+        // size 1 has
+        ll u=1;
+        ll v=adj[1][0];
+
+        cout<<u<<" "<<v<<endl;
+        cout<<u<<" "<<v<<endl;
+        debug("here onecnteroid ");
+    }
+    else
+    {
+        // here 
+        ll u=-1;
+        ll v=-1;
+
+        bool f=0;
+        for(auto it:adj[centroid[0]])
         {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
+            if(it!=centroid[1])
+            {
+                f=1;
+                u=centroid[0];
+                v=it;
+            }
         }
+        // here 
+        if(f==1)
+        {
+           cout<<u<<" "<<v<<endl;
+           cout<<centroid[1]<<" "<<v<<endl;
+            return ;
+        }
+         for(auto it:adj[centroid[1]])
+        {
+            if(it!=centroid[0])
+            {
+                u=centroid[1];
+                v=it;
+            }
+        }
+
+            cout<<u<<" "<<v<<endl;
+           cout<<centroid[0]<<" "<<v<<endl;
 
 
     }
+  
 
-    cout<<"! "<<ans<<endl;
 }
 
 int main(){
@@ -92,7 +159,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        solve1();
     }
     return 0;
 }

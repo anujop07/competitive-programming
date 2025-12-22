@@ -41,48 +41,71 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-
-ll ask(ll a,ll b)
+ll solve(vector<ll>&arr,vector<ll>&brr)
 {
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
-
-    ll ans=s;
-    while(s<=e)
+    int n=arr.size();
+ 
+    vector<ll>leftarr(n);
+    leftarr[0]=arr[0];
+    for(int i=1;i<n;i++)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
-        {
-            s=mid+1;
-        }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
+        leftarr[i]=max(arr[i],leftarr[i-1]+arr[i]);
+    }
+ 
+    vector<ll>rightarr(n);
 
-
+    // left brr
+    vector<ll>temp(n);
+    // vector<ll>leftarr(n);
+    temp[0]=brr[0];
+    for(int i=1;i<n;i++)
+    {
+        temp[i]=max(brr[i],temp[i-1]+brr[i]);
     }
 
-    cout<<"! "<<ans<<endl;
+    rightarr[n-1]=brr[n-1];
+    for(int i=n-2;i>=0;i--)
+    {
+        rightarr[i]=max(brr[i],rightarr[i+1]+brr[i]);
+    }
+ 
+
+    ll ans=LONG_LONG_MIN;
+
+    ll sum=0;
+    ll maxi=rightarr[0];
+    debug(leftarr);
+    debug(rightarr);
+
+    for(int i=0;i<n;i++)
+    { 
+        ans=max(ans,leftarr[i]+rightarr[i]);
+       
+        ll currans=leftarr[i]+(rightarr[i]+(temp[i])-brr[i]);
+        ans=max(ans,currans);
+    }
+
+    return ans;
+
+    
+}
+ll solve1(){
+    ll n;
+    cin >> n;
+    vector<ll> arr(n);
+    in(arr);
+    
+    vector<ll>brr(n);
+
+    in(brr);
+
+    ll ans1=solve(arr,brr);
+    ans1=max(ans1,solve(brr,arr));
+
+    return ans1;
+   
+
+    return 0;
 }
 
 int main(){
@@ -92,7 +115,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        cout << solve1() << "\n";
     }
     return 0;
 }

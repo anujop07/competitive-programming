@@ -41,49 +41,47 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
+ll solve1() {
+    int n;
+    cin >> n;
 
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
-
-    ll ans=s;
-    while(s<=e)
-    {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
-        {
-            s=mid+1;
-        }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
-
-
+    vector<ll> arr;
+    for (int i = 1; i <= n; i++) {
+        arr.push_back(i);
     }
 
-    cout<<"! "<<ans<<endl;
+    bool leftToRight = true;
+
+    while (arr.size() > 1) {
+        vector<ll> temp;
+
+        if (leftToRight) {
+            // delete every 2nd from left
+            for (int i = 0; i < arr.size(); i++) {
+                if (i % 2 == 0)
+                    temp.push_back(arr[i]);
+            }
+        } else {
+            // delete every 2nd from right
+            int cnt = 0;
+            for (int i = arr.size() - 1; i >= 0; i--) {
+                if (cnt % 2 == 0)
+                    temp.push_back(arr[i]);
+                cnt++;
+            }
+            reverse(temp.begin(), temp.end());
+        }
+
+        arr = temp;
+        leftToRight = !leftToRight;
+
+        debug(arr); // enable if you want to see steps
+    }
+
+    return arr[0];
 }
+
+
 
 int main(){
     ios::sync_with_stdio(false);
@@ -91,8 +89,10 @@ int main(){
 
     int t;
     cin >> t;
-    while(t--){
-      solve1();
+    while(t--){ 
+        cout << solve1() << "\n";
     }
     return 0;
 }
+
+can u check and recoorect with minium cahnges over here hash_exponential_size_policyo saide minm

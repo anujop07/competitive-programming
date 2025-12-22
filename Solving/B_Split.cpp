@@ -41,48 +41,75 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
+ll solve1(){
+    int n;
+    cin >> n;
+    vector<ll> arr(2*n);
+   in(arr);
+   
+    map<ll,ll>mp;
+    for(auto it:arr) mp[it]++;
 
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
+    ll ans=0;
+    ll extra=0;
+    
 
-    ll ans=s;
-    while(s<=e)
+    // even -> odd done  
+    // even ->
+    ll one=0;
+
+    ll have=0;
+    for(auto it:mp)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        if(it.second==1)
         {
-            s=mid+1;
+            ans++;
+            one++;
+
         }
         else
         {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
+            ll half=it.second/2;
+            if(it.second%2==0)
+            {
+                if(half%2==1)
+                {
+                    ans+=2;
+                }
+                else
+                {
+                    ans+=2;
+                    extra++;
+                }
+                
+            }
+            else
+            {
+                have++;
+                ans++;
+
+            }
         }
 
-
+        
     }
+    debug(arr);
 
-    cout<<"! "<<ans<<endl;
+
+    // debug(one);
+    debug(extra);
+    if(extra%2==1 && have==0 && one<2) return ans-2;
+
+    // if(one%2==1 && extra%2==0 && have==0) return ans-1;
+    
+    return ans;
+
+
+    return 0;
+
+
+
+    return 0;
 }
 
 int main(){
@@ -92,7 +119,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        cout << solve1() << "\n";
     }
     return 0;
 }

@@ -51,37 +51,43 @@ ll ask(ll a,ll b)
 }
 void solve1(){
   
-    ll s=1;
-    ll e=999;
+ 
+    ll ans=1;
+    ll l=1;
+    ll r=999;
 
-    ll ans=s;
-    while(s<=e)
+    while(l<r)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        ll len=r-l+1;
+        ll a=l+len/3;
+        ll b=a+len/3;
+
+        // ask here wuertu 
+   
+
+        ll area=ask(a,b);
+
+        if(area==(a+1)*(b+1))
         {
-            s=mid+1;
+            ans=a;
+            r=a;
+        }
+        else if(area==(a*(b+1)))
+        {
+            ans=a+1;
+            l=a+1;
+            r=b;
         }
         else
         {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
+            ans=b+1;
+            l=b+1;
         }
-
 
     }
 
+    // this was the legit solving over here
+    
     cout<<"! "<<ans<<endl;
 }
 

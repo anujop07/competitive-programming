@@ -41,49 +41,81 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-
-ll ask(ll a,ll b)
+void solve1()
 {
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
+    int n;
+    cin>>n;
+    vector<ll> arr(n);
+    in(arr);
 
-    ll ans=s;
-    while(s<=e)
+    vector<ll> odd,even;
+    for(auto it:arr)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        if(it%2==0) even.push_back(it);
+        else odd.push_back(it);
+    }
+
+    if(odd.size()==0)
+    {
+        for(int i=0;i<n;i++)
         {
-            s=mid+1;
+            cout<<0<<" ";
+        }
+        cout<<endl;
+        return ;
+    }
+
+    rsort(even);
+    rsort(odd);
+
+    int e=even.size();
+    int o=odd.size();
+
+    vector<ll> pref(e+1,0);
+    for(int i=0;i<e;i++)
+    {
+        pref[i+1]=pref[i]+even[i];
+    }
+
+    ll mx=odd[0];
+
+    for(int k=1;k<=n;k++)
+    {
+        ll ans=0;
+
+        if(k<=e+1)
+        {
+            int ev=k-1;
+            if(ev>e) ev=e;
+            ans=mx+pref[ev];
         }
         else
         {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
+            int l=k-1-e;
+            int r=(l%2==0?l:l+1);
+            if(r>o-1)
+            {
+                ans=0;
+            }
+            else
+            {
+                int ev=(k-1)-r;
+                if(ev<0) ans=0;
+                else
+                {
+                    if(ev>e) ev=e;
+                    ans=mx+pref[ev];
+                }
+            }
         }
 
-
+        cout<<ans<<" ";
     }
 
-    cout<<"! "<<ans<<endl;
+    cout<<endl;
+    return ;
 }
+
 
 int main(){
     ios::sync_with_stdio(false);
@@ -92,7 +124,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+     solve1();
     }
     return 0;
 }

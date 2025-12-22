@@ -41,48 +41,95 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
 void solve1(){
-  
-    ll s=1;
-    ll e=999;
+    int n;
+    cin >> n;
+   
+    ll k;
+    cin>>k;
+    // k--;
+    string s;
+    cin>>s;
 
-    ll ans=s;
-    while(s<=e)
+    if(s[k-1]=='0')
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
-        {
-            s=mid+1;
-        }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
-
-
+        cout<<-1<<endl;
+        return;
     }
+    vector<ll>ans;
 
-    cout<<"! "<<ans<<endl;
+    ll curr=1;
+
+     s=s+s+s;
+
+     int op=n+k-1;
+
+     int i=op-1;
+     int j=op+1;
+
+     debug(op);
+
+     // here 
+
+     ll cn=1;
+
+     
+     ans.push_back(k-1);
+   
+     while(cn<n)
+     {
+       if(cn%2==1)
+       {
+         // even
+         if(s[i]=='0')
+         {
+            ans.push_back(i%n);
+            i--;
+         } 
+         else
+         {
+            if(s[j]=='1')
+            {
+                curr--;
+            }
+             ans.push_back(j%n);
+             j++;
+         }
+         cn++;
+       }   
+       else
+       {
+           if(s[i]=='1')
+         {
+            ans.push_back(i%n);
+            i--;
+            curr++;
+         } 
+         else
+         {
+            if(s[j]=='1')
+            {
+                curr++;
+            }
+             ans.push_back(j%n);
+             j++;
+         }
+         cn++;
+
+       }
+       if(curr<=0)
+       {
+          cout<<-1<<endl;
+          return;
+       }
+     }
+
+    //  cout<<"YES"<<endl;
+     for(int it:ans)
+     {
+        cout<<it+1<<" ";
+     }
+     cout<<endl;
 }
 
 int main(){
@@ -92,7 +139,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+       solve1();
     }
     return 0;
 }

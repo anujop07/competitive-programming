@@ -42,57 +42,56 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // =================== SOLVE FUNCTION =================
 // ===================================================
 
-ll ask(ll a,ll b)
+ll solve(ll node,ll par,vector<vector<ll>>&adj,vector<ll>&arr,map<int,multiset<ll>>&mp)
 {
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
-
-    ll ans=s;
-    while(s<=e)
+    
+    ll currans=arr[node];
+    
+    for(auto it:adj[node])
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        if(it!=par)
         {
-            s=mid+1;
+            ll fromchild=solve(it,node,adj)
+            mp[node].insert()
         }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
-
-
     }
 
-    cout<<"! "<<ans<<endl;
+}
+ll solve1(){
+    ll n,m;
+    cin>>n>>m;
+
+    vector<ll>arr(n);
+    in(arr);
+
+    vector<vector<int>>adj(n);
+    for(int i=0;i<n-1;i++)
+    {
+        ll u,v;
+        cin>>u>>v;
+        u--;
+        v--;
+
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+
+    map<int,multiset<ll>>mp;
+    solve(0,-1,adj,arr,mp);
+
+
+
+
 }
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
 
-    int t;
-    cin >> t;
+    int t=1;
     while(t--){
-      solve1();
+        cout << solve1() << "\n";
     }
     return 0;
 }

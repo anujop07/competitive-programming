@@ -41,58 +41,95 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
 void solve1(){
-  
-    ll s=1;
-    ll e=999;
+   
+    ll n;
+    cin>>n;
+   
+    ll curr=0;
+    vector<ll>ans(n);
 
-    ll ans=s;
-    while(s<=e)
+    int i=0;
+
+
+    priority_queue<ll>pq;
+
+  
+   vector<ll>input;
+    for(int cn=0;cn<2*n;cn++)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        char ch;
+        cin>>ch;
+        
+        if(ch=='+')
         {
-            s=mid+1;
+            input.push_back(-1);
+           pq.push(i);
+           i++;
         }
         else
         {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
+            ll ele;
+            cin>>ele;
+             input.push_back(ele);
+
+            if(pq.size()==0)
+            {
+                cout<<"NO"<<endl;
+                return ;
+            }
+            ans[pq.top()]=ele;
+            pq.pop();
+            
         }
-
-
     }
 
-    cout<<"! "<<ans<<endl;
+    // debug(ans);
+    // check logic here 
+
+    
+
+    priority_queue<ll,vector<ll>,greater<ll>>minheap;
+
+    // here 
+  
+    debug(ans);
+     i=0;
+    for(ll it:input)
+    {
+        if(it==-1)
+        { 
+           minheap.push(ans[i]);
+           i++;
+        }
+        else
+        {
+            if(minheap.top()!=it) 
+            {
+                cout<<"NO"<<endl;
+                return ;
+            }
+            minheap.pop();
+        }
+    }
+
+    
+    cout<<"YES"<<endl;
+    for(int it:ans)
+    {
+        cout<<it<<" ";
+    }
+    cout<<endl;
+
 }
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
 
-    int t;
-    cin >> t;
+    int t=1;
     while(t--){
-      solve1();
+        solve1();
     }
     return 0;
 }

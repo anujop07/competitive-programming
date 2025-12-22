@@ -41,58 +41,58 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
+ll solve1(){
+   
+    ll n;
+    cin>>n;
+    vector<ll>arr(n);
+    in(arr);
 
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
+    vector<ll>vis(150000+2,0);
+    sort(arr);
 
-    ll ans=s;
-    while(s<=e)
+    for(int i=0;i<n;i++)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        if(arr[i]==1)
         {
-            s=mid+1;
+             if(vis[arr[i]]==0)
+            {
+                vis[arr[i]]=1;
+            }
+            else if(vis[arr[i]+1]==0)
+            {
+                vis[arr[i]+1]=1;
+            }
+            continue;
+            
         }
-        else
+        if(vis[arr[i]-1]==0)
         {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
+            vis[arr[i]-1]=1;
         }
-
-
+        else if(vis[arr[i]]==0)
+        {
+            vis[arr[i]]=1;
+        }
+        else if(vis[arr[i]+1]==0)
+        {
+            vis[arr[i]+1]=1;
+        }
+        
+        
     }
-
-    cout<<"! "<<ans<<endl;
+    int ans=0;
+    for(int it:vis)
+    {
+        ans+=it;
+    }
+    return ans;
 }
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
 
-    int t;
-    cin >> t;
-    while(t--){
-      solve1();
-    }
+    cout<<solve1()<<endl;
     return 0;
 }

@@ -42,47 +42,62 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // =================== SOLVE FUNCTION =================
 // ===================================================
 
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
 void solve1(){
-  
-    ll s=1;
-    ll e=999;
+       ll n,l,r;
+        cin>>n>>l>>r;
 
-    ll ans=s;
-    while(s<=e)
-    {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
-        {
-            s=mid+1;
+        vector<int>p(n+1);
+
+        p[0] = 0;
+
+        for (int i=1;i<=n;i++){
+            if (i==r)
+            {
+                 p[i]=l-1;  
+            }
+            else
+            {
+               p[i]=i;      
+            }
+                   
         }
-        else
+        int ans=0;
+        debug(p);
+
+        vector<ll>arr;
+        for (int i = 1; i <= n; i++) 
         {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
+            int ai = p[i] ^ p[i-1];
+            if (ai == 0) ai = 1; 
+            debug(i);
+            debug(p[i]);
+            debug(p[i-1]);
+            if(i>=l && i<=r)
+            {
+                ans=ans^ai;
+            }
+            debug(ai);
+            arr.push_back(ai);
+            cout << ai << " ";
         }
+        cout<<endl;
+        debug(ans);
+        // // cout<<ans<<endl;
+        // for(int i=0;i<n;i++)
+        // {
+        //     ll cur=0;
+        //     for(int j=i;j<n;j++)
+        //     {
+        //        cur=cur^arr[j];
+        //        if(cur==0)
+        //        {
+        //         debug("ADHASD");
+        //        }
+        //     }
+        // }
 
 
-    }
-
-    cout<<"! "<<ans<<endl;
+    return ;
 }
 
 int main(){
@@ -92,7 +107,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+    solve1();
     }
     return 0;
 }

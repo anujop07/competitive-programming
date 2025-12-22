@@ -41,48 +41,55 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-
-ll ask(ll a,ll b)
+void solve(ll n,map <ll,ll>&mp)
 {
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
+     for(ll i=1;i*i<=n;i++)
+     {
+        if(n%i==0)
+        {
+            mp[i]++;
+            if(n/i==i) continue;
+            mp[n/i]++;
+        }
+     }
 }
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
+ll solve1(){
+    int n;
+    cin >> n;
+    vector<ll> arr(n);
+    in(arr);
 
-    ll ans=s;
-    while(s<=e)
-    {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+     if(n<=2) return 0;
+     // here 
+     // like
+
+     map<ll,ll>mp;
+     ll ans=(arr[n-1]-arr[0]+1 -(n));
+
+     ll sum=0;
+     for(int i=1;i<n;i++)
+     {
+        solve(arr[i]-arr[i-1],mp);
+        sum+=arr[i]-arr[i-1];
+     }
+     debug(mp);
+     debug(sum);                  
+     for(auto it:mp)
+     {
+        if(it.second==n-1)
         {
-            s=mid+1;
+            // how many req 
+            debug(sum);
+            debug(it.first);
+            ans=min(ans,((sum)/it.first)-(n-1));
         }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
+     }
+     debug(ans);
+     return ans;
 
+     return ans;
 
-    }
-
-    cout<<"! "<<ans<<endl;
+    return 0;
 }
 
 int main(){
@@ -92,7 +99,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+        cout << solve1() << "\n";
     }
     return 0;
 }

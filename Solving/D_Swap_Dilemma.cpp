@@ -17,6 +17,50 @@ using ordered_set = tree<T,null_type,less<T>,rb_tree_tag,tree_order_statistics_n
 #define debug(x)
 #endif
 
+ll mergeAndCount(vector<ll> &a, ll l, ll m, ll r) {
+    ll cnt = 0;
+    ll n1 = m - l + 1;
+    ll n2 = r - m;
+
+    vector<ll> L(n1), R(n2);
+
+    for (ll i = 0; i < n1; i++) L[i] = a[l + i];
+    for (ll i = 0; i < n2; i++) R[i] = a[m + 1 + i];
+
+    ll i = 0, j = 0, k = l;
+
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            a[k++] = L[i++];
+        } else {
+            // inversion: all remaining in L are > R[j]
+            cnt += (n1 - i);
+            a[k++] = R[j++];
+        }
+    }
+
+    while (i < n1) a[k++] = L[i++];
+    while (j < n2) a[k++] = R[j++];
+
+    return cnt;
+}
+
+ll mergeSortAndCount(vector<ll> &a, ll l, ll r) {
+    if (l >= r) return 0;
+
+    ll m = (l + r) / 2;
+    ll cnt = 0;
+
+    cnt += mergeSortAndCount(a, l, m);
+    cnt += mergeSortAndCount(a, m + 1, r);
+    cnt += mergeAndCount(a, l, m, r);
+
+    return cnt;
+}
+
+ll countInversions(vector<ll> &a) {
+    return mergeSortAndCount(a, 0, (ll)a.size() - 1);
+}
 // Primitive types
 template<typename T> void _print(T t){cerr<<t;}
 template<> void _print<string>(string t){cerr<<'"'<<t<<'"';}
@@ -41,48 +85,49 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
+ll solve1(){
+    int n;
+    cin >> n;
+    vector<ll> arr(n);
+    in(arr);
 
-ll ask(ll a,ll b)
-{
-    cout<<"? "<<a<<" "<<b<<endl;
-    ll area;
-    cin>>area;
-    return area;
-}
-void solve1(){
-  
-    ll s=1;
-    ll e=999;
+    vector<ll>brr(n);
+    in(brr);
+    vector<pair<ll,ll>>nums;
 
-    ll ans=s;
-    while(s<=e)
+    map<int,int>mp;
+    set<ll>st1(arr.begin(),arr.end());
+    for(int i=0;i<n;i++)
     {
-        ll mid=(s+e)/2;
-        ll normal=1*mid;
-        ll area=ask(1LL,mid);
-       
-        if(area==normal)
+        mp[i]=arr[i];
+        if(!st1.count(brr[i]))
         {
-            s=mid+1;
+           return false;
         }
-        else
-        {
-           if(area==(2*(mid+1)))
-           {
-              cout<<"! "<<1<<endl;
-              return;
-           }
-           else
-           {
-               ans=mid;
-               e=mid-1;
-           }
-        }
+        nums.push_back({brr[i],i});
+    }
+    sort(brr);
 
+    sort(nums);
+    // debug(st1);
 
+    for(int i=0;i<n;i++)
+    {
+        arr[i]=mp[nums[i].second];
     }
 
-    cout<<"! "<<ans<<endl;
+    debug(arr);
+    debug(brr);
+    if(arr==brr) return true;
+
+    ll cn=countInversions(arr);
+    if(cn%2==0) return true;
+
+    return false;
+
+    
+
+    
 }
 
 int main(){
@@ -92,7 +137,14 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-      solve1();
+       if(solve1())
+       {
+        cout<<"YES"<<endl;
+       }
+       else
+       {
+        cout<<"NO"<<endl;
+       }
     }
     return 0;
 }
