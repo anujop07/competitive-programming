@@ -41,20 +41,113 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-ll solve1(){
-   ll n,a,b;
-   cin>>n>>a>>b;
+void solve1(){
+   ll n,m,k;
+   cin>>n>>m>>k;
 
-   ll ans=a;
-//    ll prev=a;
-//    a=(a+b)%n;
-//    while(a!=prev)
-//    {
-//     ans=max(ans,a);
-//       a=(a+b)%n;
-      
-//    }
-   return ans;
+   vector<ll>arr(n);
+   vector<ll>spike(m);
+   in(arr);
+   in(spike);
+
+
+   string s;
+   cin>>s;
+ 
+  
+   ll cur=0;
+
+   vector<ll>leftmax(s.size(),0);
+   vector<ll>rightmax(s.size(),0);
+
+   for(int i=0;i<k;i++)
+   {
+       char ch=s[i];
+       if(ch=='L')
+       {
+          cur--;
+       }
+       else
+       {
+          cur++;
+       }
+       leftmax[i]=max(0LL,-cur);
+       rightmax[i]=max(0LL,cur);
+       
+       if(i>0)
+       {
+           leftmax[i]=max(leftmax[i],leftmax[i-1]);
+           rightmax[i]=max(rightmax[i],rightmax[i-1]);
+       }
+   }
+   // from each robot closese here like spike
+
+   vector<ll>diff(k+4,0);
+
+   sort(spike);
+   for(int i=0;i<n;i++)
+   {
+        int ri=upper_bound(spike.begin(),spike.end(),arr[i])-spike.begin();
+        ll rclose=LONG_MAX;
+        ll lclose=LONG_LONG_MAX;
+
+        int li=ri-1;
+
+        if(ri<spike.size())
+        {
+            rclose=spike[ri]-arr[i];
+        }
+        if(li>=0)
+        {
+            lclose=arr[i]-spike[li];
+        }
+
+        // to reach it 
+        ll s1=1;
+        ll e=k;
+        ll ans=-1;
+        while(s1<=e)
+        {
+            ll mid=(s1+e)/2;
+            if(lclose<=leftmax[mid-1] || rclose<=rightmax[mid-1] )
+            {
+                ans=mid;
+                e=mid-1;
+            }
+            else
+            {
+                s1=mid+1;
+            }
+        }
+        debug(i);
+        debug(ans);
+        debug(lclose);
+        debug(rclose);
+        // debug
+
+        if(ans==-1)
+        {
+            diff[1]++;
+            diff[k+1]--;
+        }
+        else
+        {
+            // he die at mid
+            diff[1]++;
+            diff[ans]--;
+        }
+   }
+   debug(leftmax);
+   debug(rightmax);
+
+   ll sum=0;
+   for(int i=1;i<=k;i++)
+   {
+       sum+=diff[i];
+       cout<<sum<<" ";
+   }
+   cout<<endl;
+
 }
 
 int main(){
@@ -64,7 +157,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-        cout << solve1() << "\n";
+        solve1();
     }
     return 0;
 }

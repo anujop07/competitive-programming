@@ -1,70 +1,58 @@
-// Author: anuj
-#include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace std;
-using namespace __gnu_pbds;
-#define ll long long
-
-// ---------- PBDS ----------
-template <typename T>
-using ordered_set = tree<T,null_type,less<T>,rb_tree_tag,tree_order_statistics_node_update>;
-
-// ---------- Debug ----------
-#ifndef ONLINE_JUDGE
-#define debug(x) cerr<<#x<<" "; _print(x); cerr<<"\n";
-#else
-#define debug(x)
-#endif
-
-// Primitive types
-template<typename T> void _print(T t){cerr<<t;}
-template<> void _print<string>(string t){cerr<<'"'<<t<<'"';}
-template<typename T,typename V> void _print(pair<T,V> p){cerr<<"{";_print(p.first);cerr<<",";_print(p.second);cerr<<"}";}
-template<typename T> void _print(vector<T> v){cerr<<"[ "; for(T i:v){_print(i); cerr<<" ";} cerr<<"]";}
-template<typename T> void _print(set<T> s){cerr<<"{ "; for(T i:s){_print(i); cerr<<" ";} cerr<<"}";}
-template<typename T> void _print(multiset<T> s){cerr<<"{ "; for(T i:s){_print(i); cerr<<" ";} cerr<<"}";}
-template<typename K, typename V> void _print(map<K,V> m){cerr<<"{ "; for(auto i:m){_print(i); cerr<<" ";} cerr<<"}";}
-template<typename T> void _print(vector<vector<T>> v){
-    cerr<<"[\n";
-    for(auto &row:v){ cerr<<"  [ "; for(auto &x:row){ _print(x); cerr<<" "; } cerr<<"]\n"; }
-    cerr<<"]";
-}
-
-// ---------- Utility Functions ----------
-template<typename T> void sort(vector<T>& a){sort(a.begin(),a.end());}
-template<typename T> void rsort(vector<T>& a){sort(a.rbegin(),a.rend());}
-template<> void sort<string>(vector<string>& a){sort(a.begin(),a.end());}
-template<typename T> T summ(const vector<T>& a){return accumulate(a.begin(),a.end(),T(0));}
-template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
-
-// ===================================================
-// =================== SOLVE FUNCTION =================
-// ===================================================
-ll solve1(){
+// --------- Lazy Segment Tree (Range Add, Range Sum Query) ---------
+struct LazySegTree {
     int n;
-    cin >> n;
-    vector<ll> arr(n);
-    in(arr);
+    vector<ll> seg, lazy;
 
-    // TODO: implement solution here
-
-    return 0;
-}
-
-int main(){
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-
-    #ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-    #endif
-
-    int t;
-    cin >> t;
-    while(t--){
-        cout << solve1() << "\n";
+    LazySegTree(int n){
+        this->n = n;
+        seg.assign(4*n, 0);
+        lazy.assign(4*n, 0);
     }
-    return 0;
-}
+
+    void build(vector<ll>& a, int idx, int l, int r){
+        if(l == r){ seg[idx] = a[l]; return; }
+        int mid = (l + r) / 2;
+        build(a, idx*2+1, l, mid);
+        build(a, idx*2+2, mid+1, r);
+        seg[idx] = seg[idx*2+1] + seg[idx*2+2];
+    }
+
+    void push(int idx, int l, int r){
+        if(lazy[idx] != 0){
+            seg[idx] += (r - l + 1) * lazy[idx];
+            if(l != r){
+                lazy[idx*2+1] += lazy[idx];
+                lazy[idx*2+2] += lazy[idx];
+            }
+            lazy[idx] = 0;
+        }
+    }
+
+    void update(int idx, int l, int r, int ql, int qr, ll val){
+        push(idx, l, r);
+        if(r < ql || l > qr) return;
+        if(ql <= l && r <= qr){
+            lazy[idx] += val;
+            push(idx, l, r);
+            return;
+        }
+        int mid = (l + r) / 2;
+        update(idx*2+1, l, mid, ql, qr, val);
+        update(idx*2+2, mid+1, r, ql, qr, val);
+        seg[idx] = seg[idx*2+1] + seg[idx*2+2];
+    }
+
+    ll query(int idx, int l, int r, int ql, int qr){
+        push(idx, l, r);
+        if(r < ql || l > qr) return 0;
+        if(ql <= l && r <= qr) return seg[idx];
+        int mid = (l + r) / 2;
+        return query(idx*2+1, l, mid, ql, qr) +
+               query(idx*2+2, mid+1, r, ql, qr);
+    }
+};
+// Usage:
+// LazySegTree seg(n);
+// seg.build(arr, 0, 0, n-1);
+// seg.update(0,0,n-1,l,r,val);
+// ll ans = seg.query(0,0,n-1,l,r);

@@ -41,22 +41,46 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-ll solve1(){
-   ll n,a,b;
-   cin>>n>>a>>b;
-
-   ll ans=a;
-//    ll prev=a;
-//    a=(a+b)%n;
-//    while(a!=prev)
-//    {
-//     ans=max(ans,a);
-//       a=(a+b)%n;
-      
-//    }
-   return ans;
+bool check(ll l,ll w,vector<ll>& arr)
+{
+    ll a=arr[0],b=arr[1],c=arr[2];
+    if((a==l&&l<b&&b<l+w)||
+       (a==w&&b>l)||
+       (c==2*l&&w<b&&b<2*w)||
+       (c==l+w&&b>min(l,w))||
+       (c==2*l+w))
+    {
+        return true;
+    }
+    return false;
 }
 
+ll solve1()
+{
+    ll l,w,r,g,b;
+    cin>>l>>w>>r>>g>>b;
+
+    vector<ll> arr={r,g,b};
+    sort(arr);
+    vector<ll> patt1={2*l,w,w};
+    vector<ll> patt2={2*w,l,l};
+    vector<ll> patt3={l+w,l,w};
+
+    sort(patt1); 
+    sort(patt2); 
+    sort(patt3); 
+    if(arr==patt1||arr==patt2||arr==patt3)
+    {
+        return 4;
+    }
+
+    if(check(l,w,arr)||check(w,l,arr))
+    {
+        return 5;
+    }
+
+    return 6;
+} 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);

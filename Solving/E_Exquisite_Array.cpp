@@ -42,19 +42,14 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // =================== SOLVE FUNCTION =================
 // ===================================================
 ll solve1(){
-   ll n,a,b;
-   cin>>n>>a>>b;
+    int n;
+    cin >> n;
+    vector<ll> arr(n);
+    in(arr);
 
-   ll ans=a;
-//    ll prev=a;
-//    a=(a+b)%n;
-//    while(a!=prev)
-//    {
-//     ans=max(ans,a);
-//       a=(a+b)%n;
-      
-//    }
-   return ans;
+    // TODO: implement solution here
+
+    return 0;
 }
 
 int main(){
@@ -64,6 +59,14 @@ int main(){
     int t;
     cin >> t;
     while(t--){
+        // if(solve1())
+        // {
+        //     cout<<"YES"<<endl;
+        // }
+        // else
+        // {
+        //     cout<<"NO"<<endl;
+        // }
         cout << solve1() << "\n";
     }
     return 0;

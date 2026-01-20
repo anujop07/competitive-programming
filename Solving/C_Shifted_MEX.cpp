@@ -41,20 +41,48 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-ll solve1(){
-   ll n,a,b;
-   cin>>n>>a>>b;
+ll solve(vector<ll>&arr,ll add)
+{
+    ll mex=0;
 
-   ll ans=a;
-//    ll prev=a;
-//    a=(a+b)%n;
-//    while(a!=prev)
-//    {
-//     ans=max(ans,a);
-//       a=(a+b)%n;
-      
-//    }
-   return ans;
+    set<int>st;
+    for(int i=0;i<arr.size();i++)
+    {
+        st.insert(arr[i]+add);
+    }
+    
+    while(st.count(mex)) mex++;
+    
+    return mex;
+
+}
+ll solve1(){
+    int n;
+    cin >> n;
+    vector<ll> arr(n);
+    in(arr);
+    
+    sort(arr);
+
+    int ans=1;
+
+    int cn=1;
+    for(int i=1;i<n;i++)
+    {
+        if(arr[i]==arr[i-1]) continue;
+        if(arr[i]-arr[i-1]==1)
+        {
+            cn++;
+        }
+        else
+        {
+            ans=max(ans,cn);
+            cn=1;
+        }
+    }
+
+    return max(ans,cn);
+    return 0;
 }
 
 int main(){

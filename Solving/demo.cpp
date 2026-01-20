@@ -42,12 +42,15 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // =================== SOLVE FUNCTION =================
 // ===================================================
 ll solve1(){
-    int n;
+    ll n;
     cin >> n;
     vector<ll> arr(n);
     in(arr);
 
-    // TODO: implement solution here
+    debug(arr);
+    
+  
+
 
     return 0;
 }
@@ -60,6 +63,14 @@ int main(){
     cin >> t;
     while(t--){
         cout << solve1() << "\n";
+        // if(solve1())
+        // {
+        //     cout<<"YES"<<endl;
+        // }
+        // else
+        // {
+        //     cout<<"NO"<<endl;
+        // }
     }
     return 0;
 }
