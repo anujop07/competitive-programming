@@ -47,6 +47,23 @@ ll solve1(){
     vector<ll> arr(n);
     in(arr);
 
+    vector<ll>brr;
+    brr=arr;
+    sort(brr);
+
+    // can i do temp like it will minum ko lena yr fir maxi ko
+    ll ans=LONG_MAX;
+
+    for(int i=0;i<n;i++)
+    {
+        if(arr[i]!=brr[i])
+        {
+            ans=min(ans,max(arr[i]-brr[0],brr[n-1]-arr[i]));
+        }
+        
+    }
+    if(arr==brr) return -1;
+    return ans;
 
     return 0;
 }
@@ -59,14 +76,6 @@ int main(){
     cin >> t;
     while(t--){
         cout << solve1() << "\n";
-        if(solve1())
-        {
-            cout<<"YES"<<endl;
-        }
-        else
-        {
-            cout<<"NO"<<endl;
-        }
     }
     return 0;
 }

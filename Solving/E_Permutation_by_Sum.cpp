@@ -41,14 +41,70 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-ll solve1(){
-    int n;
-    cin >> n;
-    vector<ll> arr(n);
-    in(arr);
+ll isok(ll sum, ll ele,ll rem)
+{
+    // ele--;
+    ll leftsum=sum-ele;
+    rem--;
+    if(leftsum>=(rem*(rem+1))/2) return true;
+    
+    return false;
+}
+void solve1(){
+   ll n,l,r,s;
+   cin>>n>>l>>r>>s;
+   set<ll>st;
+   ll rem=r-l+1;
 
+   vector<ll>ans;
+   ll cn=n;
+   while(rem>0 && cn>0)
+   {
+       while(cn>0 &&!isok(s,cn,rem))
+       {
+           cn--;
+       }
+       debug(cn);
+       if(cn>0)
+       {
+        ans.push_back(cn);
+        rem--;
+        st.insert(cn);
+        s-=cn;
+        cn--;
+       }
+       debug(s);
+   }
 
-    return 0;
+   ll sum=summ(ans);
+   vector<int>arr2;
+   for(int i=1;i<=n;i++)
+   {
+       if(!st.count(i))
+       {
+         arr2.push_back(i);
+       }
+   }
+   int i1=0;
+   int i2=0;
+   if(s==0 && ans.size()==r-l+1)
+   {
+      for(int i=1;i<=n;i++)
+      {
+        if(i>=l && i<=r)
+        {
+            cout<<ans[i-l]<<" ";
+        }
+        else
+        {
+            cout<<arr2[i1]<<" ";    
+            i1++;
+        }
+      }
+      cout<<endl;
+      return ;
+   }
+   cout<<-1<<endl;
 }
 
 int main(){
@@ -58,15 +114,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-        cout << solve1() << "\n";
-        if(solve1())
-        {
-            cout<<"YES"<<endl;
-        }
-        else
-        {
-            cout<<"NO"<<endl;
-        }
+        solve1();
     }
     return 0;
 }

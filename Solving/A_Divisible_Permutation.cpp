@@ -41,14 +41,38 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-ll solve1(){
-    int n;
-    cin >> n;
-    vector<ll> arr(n);
-    in(arr);
+void solve1(){
+   ll n;
+   cin>>n;
+   ll cn1=n;
+   ll cn2=1;
 
+   bool f=1;
+   vector<int>ans;
+   for(int i=0;i<n;i++)
+   {
+    if(f)
+    {
+        ans.push_back(cn1);
+        
+        cn1-=1;
+    }
+    else
+    {
+        ans.push_back(cn2);
+       
+        cn2+=1;
+    }
+    f=!f;
+   }
+   reverse(ans.begin(),ans.end());
+   for(int it:ans)
+   {
+    cout<<it<<" ";
+   }
+//    cout<<endl;
 
-    return 0;
+   cout<<endl;
 }
 
 int main(){
@@ -58,15 +82,8 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-        cout << solve1() << "\n";
-        if(solve1())
-        {
-            cout<<"YES"<<endl;
-        }
-        else
-        {
-            cout<<"NO"<<endl;
-        }
+        solve1();
+
     }
     return 0;
 }

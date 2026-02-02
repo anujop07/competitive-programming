@@ -41,12 +41,35 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
+int solve(vector<ll>&arr,int idx)
+{
+    set<ll>st;
+    st.insert(1);
+    st.insert(2);
+    int ans=1;
+    for(int i=idx+1;i<arr.size();i++)
+    {
+         if(st.count(arr[i]))
+         {
+            ans++;
+            st.insert(arr[i]+1);
+         }
+    }
+    return ans;
+}
 ll solve1(){
     int n;
     cin >> n;
     vector<ll> arr(n);
     in(arr);
 
+    int ans=0;
+    for(int i=0;i<n;i++)
+    {
+        if(arr[i]!=1) continue;
+        ans=max(ans,solve(arr,i));
+    }
+    return ans;
 
     return 0;
 }
@@ -59,14 +82,6 @@ int main(){
     cin >> t;
     while(t--){
         cout << solve1() << "\n";
-        if(solve1())
-        {
-            cout<<"YES"<<endl;
-        }
-        else
-        {
-            cout<<"NO"<<endl;
-        }
     }
     return 0;
 }

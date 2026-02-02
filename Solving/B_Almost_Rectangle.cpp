@@ -41,14 +41,130 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-ll solve1(){
+void show(vector<string>&arr)
+{
+    for(auto it:arr)
+    {
+        cout<<it<<endl;
+    }
+}
+
+void solve(vector<vector<int>>&vis,int x,int y)
+{
+     int x1=x;
+     int y1=y;
+     int n=vis.size();
+     while(x1<n)
+     {
+        vis[x1][y1]++;
+        x1++;
+     }
+     x1=x;
+
+     while(x1>=0)
+     {
+        vis[x1][y1]++;
+        x1--;
+     }
+
+     x1=x;
+     while(y1<n)
+     {
+        vis[x1][y1]++;
+        y1++;
+     }
+     y1=y;
+
+     while(y1>=0)
+     {
+        vis[x1][y1]++;
+        y1--;
+     }
+
+
+}
+void solve1(){
     int n;
     cin >> n;
-    vector<ll> arr(n);
+    vector<string> arr(n);
     in(arr);
+   
+    int x1,y1,x2,y2;
 
+    x1=-1;
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            if(arr[i][j]=='*')
+            { 
+                if(x1==-1)
+                {
+                    x1=i;
+                    y1=j;
+                }  
+                else
+                {
+                    x2=i;
+                    y2=j;
+                }
+            }
+        }
+    }
+    // same 
+    if(x1==x2)
+    {
+        if(x1-1>=0)
+        {
+            arr[x1-1][y1]='*';
+            arr[x1-1][y2]='*';
+        }
+        else
+        {
+             arr[x1+1][y1]='*';
+            arr[x1+1][y2]='*';
+        }
+        show(arr);
+        return;
+    }
+     if(y1==y2)
+    {
+        if(y1-1>=0)
+        {
+            arr[x1][y1-1]='*';
+            arr[x2][y1-1]='*';
+        }
+        else
+        {
+             arr[x1][y1+1]='*';
+            arr[x2][y2+1]='*';
+        }
+        show(arr);
+        return ;
+    }
 
-    return 0;
+    vector<vector<int>>vis(n,vector<int>(n,0));
+
+    solve(vis,x1,y1);
+    solve(vis,x2,y2);
+
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            if(vis[i][j]==2)
+            {
+                cout<<"*";
+            }
+            else
+            {
+                cout<<arr[i][j];
+            }
+        }
+        cout<<endl;
+    }
+    // 
+    return ;
 }
 
 int main(){
@@ -58,15 +174,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-        cout << solve1() << "\n";
-        if(solve1())
-        {
-            cout<<"YES"<<endl;
-        }
-        else
-        {
-            cout<<"NO"<<endl;
-        }
+     solve1();
     }
     return 0;
 }

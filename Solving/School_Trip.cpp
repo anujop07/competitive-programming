@@ -42,11 +42,14 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // =================== SOLVE FUNCTION =================
 // ===================================================
 ll solve1(){
-    int n;
-    cin >> n;
-    vector<ll> arr(n);
-    in(arr);
+    ll n,x,k;
+    cin>>n>>x>>k;
 
+    ll opt1=x%k;
+    ll opt2=k-x%k;
+
+    if(opt2<=(n-x)) return min(opt1,opt2);
+    return opt1;
 
     return 0;
 }
@@ -59,14 +62,6 @@ int main(){
     cin >> t;
     while(t--){
         cout << solve1() << "\n";
-        if(solve1())
-        {
-            cout<<"YES"<<endl;
-        }
-        else
-        {
-            cout<<"NO"<<endl;
-        }
     }
     return 0;
 }

@@ -41,16 +41,74 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
+
 ll solve1(){
-    int n;
-    cin >> n;
-    vector<ll> arr(n);
-    in(arr);
+ ll n,m;
+ cin>>n>>m;
 
+ string s,t;
+ cin>>s>>t;
 
-    return 0;
+ int i=0
+ int j=0;
+ while(i<n && j<m)
+ {
+     if(s[i]==t[j]) j++;
+     i++;
+ }
+ if(j<m) return -1;
+
+ vector<vector<ll>> dp_next(m+1, vector<ll>(2, INT_MAX));
+ vector<vector<ll>> dp_cur(m+1, vector<ll>(2, INT_MAX));
+
+ // base case: i == n
+ for(int j=0;j<=m;j++)
+ {
+     for(int isC=0;isC<=1;isC++)
+     {
+         if(j<m) dp_next[j][isC]=INT_MAX;
+         else dp_next[j][isC]=0;
+     }
+ }
+
+ for(int i=n-1;i>=0;i--)
+ {
+     for(int j=m;j>=0;j--)
+     {
+         for(int isC=0;isC<=1;isC++)
+         {
+             ll opt1=INT_MAX;
+
+             if(j>=m)
+             {
+                 dp_cur[j][isC]=1;
+                 continue;
+             }
+
+             if(isC)
+             {
+                 opt1=dp_next[j][1];
+                 if(s[i]==t[j])
+                 {
+                     opt1=min(opt1,dp_next[j+1][0]);
+                 }
+             }
+             else
+             {
+                 opt1=1+dp_next[j][1];
+                 if(s[i]==t[j])
+                 {
+                     opt1=min(opt1,dp_next[j+1][0]);
+                 }
+             }
+             dp_cur[j][isC]=opt1;
+         }
+     }
+     dp_next=dp_cur;
+ }
+
+ return dp_next[0][0];
 }
-
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
@@ -59,14 +117,6 @@ int main(){
     cin >> t;
     while(t--){
         cout << solve1() << "\n";
-        if(solve1())
-        {
-            cout<<"YES"<<endl;
-        }
-        else
-        {
-            cout<<"NO"<<endl;
-        }
     }
     return 0;
 }

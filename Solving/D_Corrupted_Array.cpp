@@ -41,14 +41,57 @@ template<typename T> void in(vector<T>& a){for(auto &i:a){cin>>i;}}
 // ===================================================
 // =================== SOLVE FUNCTION =================
 // ===================================================
-ll solve1(){
+void solve1(){
     int n;
     cin >> n;
-    vector<ll> arr(n);
+    vector<ll> arr(n+2);
     in(arr);
 
+    rsort(arr);
 
-    return 0;
+    ll ele=arr[0];
+
+    ll sum=summ(arr);
+ 
+    sum-=arr[0];
+    for(int i=1;i<n;i++)
+    {
+          if(sum-arr[i]==arr[0])
+          {
+             for(int j=1;j<arr.size();j++)
+             {
+                if(j==i) continue;
+                cout<<arr[j]<<" ";
+             }
+             cout<<endl;
+             return ;
+
+          }
+    }
+
+
+    sum=summ(arr);
+
+    sum-=arr[0];
+
+    sum-=arr[1];
+
+    if(sum==arr[1])
+    {
+        for(int i=2;i<arr.size();i++)
+        {
+            cout<<arr[i]<<" ";
+        }
+        cout<<endl;
+        return ;
+    }
+
+    cout<<-1<<endl;
+    return ;
+    // TODO: implement solution here
+
+
+    return ;
 }
 
 int main(){
@@ -58,15 +101,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-        cout << solve1() << "\n";
-        if(solve1())
-        {
-            cout<<"YES"<<endl;
-        }
-        else
-        {
-            cout<<"NO"<<endl;
-        }
+       solve1();
     }
     return 0;
 }

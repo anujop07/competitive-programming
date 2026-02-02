@@ -46,9 +46,29 @@ ll solve1(){
     cin >> n;
     vector<ll> arr(n);
     in(arr);
+    vector<ll>brr(n);
 
+    in(brr);
 
-    return 0;
+    vector<ll>preMax(n,0);
+    preMax[0]=arr[0];
+
+    
+    for(int i=1;i<n;i++)
+    {
+        preMax[i]=max(preMax[i-1],arr[i]);
+    }
+
+    debug(preMax);
+    for(int i=n-1;i>=0;i--)
+    {
+        if(arr[i]==brr[i]) continue;
+        if(arr[i]>brr[i]) return false;
+
+        if(preMax[i]!=arr[i]) return false;
+        if(i-1>=0 && preMax[i-1]==arr[i]) return false;
+    }
+    return true;
 }
 
 int main(){
@@ -58,7 +78,7 @@ int main(){
     int t;
     cin >> t;
     while(t--){
-        cout << solve1() << "\n";
+        // cout << solve1() << "\n";
         if(solve1())
         {
             cout<<"YES"<<endl;

@@ -47,6 +47,15 @@ ll solve1(){
     vector<ll> arr(n);
     in(arr);
 
+    map <int,int>mp;
+    for(int it:arr)
+    {
+          mp[it]++;
+    }
+    for(int i=0;i<n;i++)
+    {
+        if(mp[arr[i]]==1) return i+1;
+    }
 
     return 0;
 }
@@ -59,14 +68,6 @@ int main(){
     cin >> t;
     while(t--){
         cout << solve1() << "\n";
-        if(solve1())
-        {
-            cout<<"YES"<<endl;
-        }
-        else
-        {
-            cout<<"NO"<<endl;
-        }
     }
     return 0;
 }
